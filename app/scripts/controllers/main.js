@@ -13,10 +13,10 @@ angular.module('githubClassroomDashboardApp')
     main.ghApi = ghApi;
 
     var lookup = {};
-/*     $http.get('/preview/lookup.json')
+     $http.get('/preview/lookup.json')
       .then( function(response){
         lookup = response.data;
-      }); */
+      }); 
 
     var org = 'HE-Arc-ODI';
     var classroomProjectPrefix = 'sa17-serie1-';
@@ -76,6 +76,12 @@ angular.module('githubClassroomDashboardApp')
         return list + 'https://heg-web.github.io/' + main.assignments[key].name + '\n';
       }, ''));
     };
+	
+	main.getCloneSSHUrls = function () {
+	  return 'data:text/plain;charset=utf-8,' + encodeURIComponent(Object.keys(main.assignments).reduce(function(list, key){
+        return list + 'git clone git@github.com:HE-Arc-ODI/' + main.assignments[key].name + '\n';
+		}, ''));
+	};
 
     main.loginToMatricule = function(login) {
       return lookup[login];
