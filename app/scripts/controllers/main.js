@@ -13,13 +13,13 @@ angular.module('githubClassroomDashboardApp')
     main.ghApi = ghApi;
 
     var lookup = {};
-    $http.get('/preview/lookup.json')
+/*     $http.get('/preview/lookup.json')
       .then( function(response){
         lookup = response.data;
-      });
+      }); */
 
-    var org = 'heg-web';
-    var classroomProjectPrefix = 'moncv-';
+    var org = 'HE-Arc-ODI';
+    var classroomProjectPrefix = 'sa17-serie1-';
     var API = 'https://api.github.com/';
     main.assignments = JSON.parse(localStorage.getItem('assignments') || '{}');
 
@@ -39,7 +39,7 @@ angular.module('githubClassroomDashboardApp')
       .then( function(response){
         //TODO: handle multipage
         response.data.filter(function(repo){
-          return !(repo.name.indexOf('cfrancillon') !== -1 || repo.name.indexOf('bfritscher') !== -1);
+          return !(repo.name.indexOf('myriamschaffter') !== -1 || repo.name.indexOf('urosselet') !== -1);
         }).forEach(function(repo){
           if(repo.name.indexOf(classroomProjectPrefix) === 0){
             var r = {name: repo.name};
