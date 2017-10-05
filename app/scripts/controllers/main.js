@@ -19,9 +19,20 @@ angular.module('githubClassroomDashboardApp')
       }); 
 
     var org = 'HE-Arc-ODI';
-    var classroomProjectPrefix = 'sa17-serie1-';
+    main.classroomProjectPrefix = 'sa17-serie1-';
     var API = 'https://api.github.com/';
     main.assignments = JSON.parse(localStorage.getItem('assignments') || '{}');
+    main.assignmentsFiltered = function(){
+      var obj = {};
+      for (var prop in main.assignments){
+        if(prop.indexOf(main.classroomProjectPrefix) != -1){
+          obj[prop] = main.assignments[prop];
+        }
+      }
+      return obj;
+    }
+
+
 
     main.before = false;
     main.switchPreview = function() {
@@ -41,7 +52,7 @@ angular.module('githubClassroomDashboardApp')
         response.data.filter(function(repo){
           return !(repo.name.indexOf('myriamschaffter') !== -1 || repo.name.indexOf('urosselet') !== -1);
         }).forEach(function(repo){
-          if(repo.name.indexOf(classroomProjectPrefix) === 0){
+          if(repo.name.indexOf(main.classroomProjectPrefix) === 0){
             var r = {name: repo.name};
             if(main.assignments.hasOwnProperty(repo.name)){
               r = main.assignments[repo.name];
@@ -61,8 +72,6 @@ angular.module('githubClassroomDashboardApp')
               return checkReadme(r);
             }).then(function(){
               return getCommits(r);
-            }).then(function(){
-              return checkTitle(r);
             }).then(function(){
               localStorage.setItem('assignments', JSON.stringify(main.assignments));
             });
@@ -151,19 +160,6 @@ angular.module('githubClassroomDashboardApp')
           });
     }
 
-    var regexTitle = /title>(.*?)<\/title/g;
-    function checkTitle(r){
-      r.title = false;
-      return $http.get(API + 'repos/' + org + '/' + r.name + '/contents/app/index.html?ref=master')
-          .then( function(response){
-            var match = regexTitle.exec(atob(response.data.content));
-            if(match.length > 1) {
-              r.title = match[1];
-            }
-          }, function(){
-            return;
-          });
-    }
 
     function checkReleases(r){
       r.hasRelease = false;
