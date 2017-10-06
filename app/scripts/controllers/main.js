@@ -50,7 +50,7 @@ angular.module('githubClassroomDashboardApp')
       .then( function(response){
         //TODO: handle multipage
         response.data.filter(function(repo){
-          return !(repo.name.indexOf('myriamschaffter') !== -1 || repo.name.indexOf('urosselet') !== -1);
+          return !(repo.name.indexOf('myriamschaffter') !== -1 || repo.name.indexOf('urosselet') !== -1 || repo.name.indexOf('solution') !== -1);
         }).forEach(function(repo){
           if(repo.name.indexOf(main.classroomProjectPrefix) === 0){
             var r = {name: repo.name};
