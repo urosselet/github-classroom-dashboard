@@ -46,7 +46,7 @@ angular.module('githubClassroomDashboardApp')
     main.refresh = function(){
       ghApi.access_token = localStorage.getItem('access_token') || window.prompt('access_token');
       localStorage.setItem('access_token', ghApi.access_token );
-      $http.get(API + 'orgs/' + org + '/repos?per_page=100') //page=2&
+      $http.get(API + 'orgs/' + org + '/repos?per_page=100&page=2') //page=2&
       .then( function(response){
         //TODO: handle multipage
         response.data.filter(function(repo){
