@@ -77,12 +77,6 @@ angular.module('githubClassroomDashboardApp')
       });
     };
 
-    main.getUrls = function () {
-      return 'data:text/plain;charset=utf-8,' + encodeURIComponent(Object.keys(main.assignments).reduce(function (list, key) {
-        return list + 'https://heg-web.github.io/' + main.assignments[key].name + '\n';
-      }, ''));
-    };
-
     main.getCloneSSHUrls = function () {
       return 'data:text/plain;charset=utf-8,' + encodeURIComponent(Object.keys(main.assignments).reduce(function (list, key) {
         return list + 'git clone git@github.com:HE-Arc-ODI/' + main.assignments[key].name + '\n';
@@ -126,9 +120,6 @@ angular.module('githubClassroomDashboardApp')
         });
     }
 
-    function getIssues(r) {
-
-    }
 
     function checkGhPagesVendor(r) {
       r.hasVendor = false;
