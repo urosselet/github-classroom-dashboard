@@ -61,27 +61,20 @@ angular.module('githubClassroomDashboardApp')
                 } else {
                   main.assignments[repo.name] = r;
                 }
-
                 getCollaborators(r).then(function () {
                   return checkBranches(r);
                 }).then(function () {
-                  return checkGhPagesVendor(r);
-                }).then(function () {
                   return checkMasterSrc(r);
-                }).then(function () {
-                  return checkReleases(r);
                 }).then(function () {
                   return checkReadme(r);
                 }).then(function () {
                   return getCommits(r);
-                }).then(function () {
-                  localStorage.setItem('assignments', JSON.stringify(main.assignments));
-                });
+                })
               });
             });
         }
+        localStorage.setItem('assignments', JSON.stringify(main.assignments));
       });
-
     };
 
     main.getUrls = function () {
@@ -133,6 +126,10 @@ angular.module('githubClassroomDashboardApp')
         });
     }
 
+    function getIssues(r) {
+
+    }
+
     function checkGhPagesVendor(r) {
       r.hasVendor = false;
       return $http.get(API + 'repos/' + org + '/' + r.name + '/contents/scripts?ref=gh-pages')
@@ -153,7 +150,7 @@ angular.module('githubClassroomDashboardApp')
       return $http.get(API + 'repos/' + org + '/' + r.name + '/contents/?ref=master')
         .then(function (response) {
           for (var i = 0; i < response.data.length; i++) {
-            console.log(response.data[i].name);
+            // console.log(response.data[i].name);
             if (response.data[i].name.indexOf('package.json') === 0) {
               r.isMasterSrc = true;
               return;
