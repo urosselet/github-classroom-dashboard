@@ -50,35 +50,33 @@ angular.module('githubClassroomDashboardApp')
       $http.head(API + 'orgs/' + org + '/repos?per_page=100').then(function (resp) {
         lastPage = resp.headers('link').match(/page=(\d+)/g).map(function (el) { return parseInt(el.substring(5)) })[1];
         for (var pageNum = 1; pageNum <= lastPage; pageNum++) {
-          $http.get(API + 'orgs/' + org + '/repos?per_page=100&page=' + pageNum)  
+          $http.get(API + 'orgs/' + org + '/repos?per_page=100&page=' + pageNum)
             .then(function (response) {
               response.data.filter(function (repo) {
                 return !(repo.name.indexOf('myriamschaffter') !== -1 || repo.name.indexOf('urosselet') !== -1 || repo.name.indexOf('solution') !== -1);
               }).forEach(function (repo) {
-                if (repo.name.indexOf(main.classroomProjectPrefix) === 0) {
-                  var r = { name: repo.name };
-                  if (main.assignments.hasOwnProperty(repo.name)) {
-                    r = main.assignments[repo.name];
-                  } else {
-                    main.assignments[repo.name] = r;
-                  }
-
-                  getCollaborators(r).then(function () {
-                    return checkBranches(r);
-                  }).then(function () {
-                    return checkGhPagesVendor(r);
-                  }).then(function () {
-                    return checkMasterSrc(r);
-                  }).then(function () {
-                    return checkReleases(r);
-                  }).then(function () {
-                    return checkReadme(r);
-                  }).then(function () {
-                    return getCommits(r);
-                  }).then(function () {
-                    localStorage.setItem('assignments', JSON.stringify(main.assignments));
-                  });
+                var r = { name: repo.name };
+                if (main.assignments.hasOwnProperty(repo.name)) {
+                  r = main.assignments[repo.name];
+                } else {
+                  main.assignments[repo.name] = r;
                 }
+
+                getCollaborators(r).then(function () {
+                  return checkBranches(r);
+                }).then(function () {
+                  return checkGhPagesVendor(r);
+                }).then(function () {
+                  return checkMasterSrc(r);
+                }).then(function () {
+                  return checkReleases(r);
+                }).then(function () {
+                  return checkReadme(r);
+                }).then(function () {
+                  return getCommits(r);
+                }).then(function () {
+                  localStorage.setItem('assignments', JSON.stringify(main.assignments));
+                });
               });
             });
         }
